@@ -1,0 +1,67 @@
+# Backend configuration
+backend:
+  name: backend
+  replicas: 4
+  image:
+    repository: korkinet/jb-backend-image
+    tag: 1.0.0
+  port: 5001
+  service:
+    name: backend-service
+    type: ClusterIP
+    port: 5001
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+
+# Frontend configuration
+frontend:
+  name: frontend
+  replicas: 4
+  image:
+    repository: korkinet/jb-frontend-image
+    tag: 1.0.0
+  port: 5002
+  service:
+    name: frontend-service
+    type: LoadBalancer
+    port: 80
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+
+# MySQL configuration
+mysql:
+  name: mysqldb
+  replicas: 1
+  image:
+    repository: mysql
+    tag: 5.7
+  port: 3306
+  database: crypto_db
+  credentials:
+    user: root
+    password: "123456"
+  service:
+    name: mysqldb-service
+    type: ClusterIP
+    port: 3306
+  pvc:
+    name: mysql-pvc
+    accessMode: ReadWriteOnce
+    storage: 1Gi
+  resources:
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
